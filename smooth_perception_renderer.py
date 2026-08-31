@@ -4,6 +4,7 @@ import numpy as np
 
 from config import BOARD_HEIGHT, BOARD_WIDTH, SENSOR_RANGE
 from simulation.board import Board
+from ui.renderer import draw_board as draw_standard_board
 
 
 def _resize_linear(values: np.ndarray, scale: int) -> np.ndarray:
@@ -28,6 +29,9 @@ def _continuous_anomaly(board: Board, scale: int = 6) -> tuple[np.ndarray, np.nd
 
 
 def draw_smooth_perception(axis, board: Board, robot_perception: bool = True) -> None:
+    if not robot_perception:
+        draw_standard_board(axis, board, False)
+        return
     axis.set_facecolor("#dbeaf2")
     anomaly, visibility = _continuous_anomaly(board)
     axis.imshow(
